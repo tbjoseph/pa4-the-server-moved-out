@@ -19,11 +19,13 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         //memset(&server, 0, sizeof(server));
         server.sin_family = AF_INET;
         server.sin_addr.s_addr = INADDR_ANY;
-        int portno = atoi(_port_no.c_str());
-        server.sin_port = htons(portno);
+        //int portno = atoi(_port_no.c_str());
+        server.sin_port = htons(atoi(_port_no.c_str()));
 
         bind_stat = bind(server_sock, (struct sockaddr *)&server, sizeof(server));
-        if (bind_stat < 0) throw std::invalid_argument("ERROR on binding");
+        if (bind_stat < 0) {
+            throw std::invalid_argument("ERROR on binding");
+        }
 
         // Listen
         listen_stat = listen(server_sock, 70);
@@ -39,18 +41,21 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         client_sock = socket(AF_INET, SOCK_STREAM, 0);
         if (client_sock < 0) throw std::invalid_argument("ERROR opening socket");
 
-        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        sockfd = client_sock;
 
-        bzero( (char *)&server_info, sizeof(server_info) );
-        //memset(&server, 0, sizeof(server));
+        //bzero( (char *)&server_info, sizeof(server_info) );
+        memset(&server_info, 0, sizeof(server_info));
         server_info.sin_family = AF_INET;
-        int portno = atoi(_port_no.c_str());
-        server_info.sin_port = htons(portno);
-        //inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr); //?
-        inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr.s_addr);
+        //int portno = atoi(_port_no.c_str());
+        server_info.sin_port = htons(atoi(_port_no.c_str()));
+        inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr); //?
+
+        //inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr.s_addr);
 
         connect_stat = connect(client_sock, (struct sockaddr *)&server_info, sizeof(server_info));
-        if (connect_stat < 0) throw std::invalid_argument("ERROR on binding");
+        if (connect_stat < 0) {
+            throw std::invalid_argument("ERROR on connecting");
+        }
     }
     
 }
