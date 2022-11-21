@@ -232,7 +232,6 @@ int main (int argc, char* argv[]) {
             channels.push_back(chan0);
 
             workers.push_back(thread(worker_thread_function, f, &request_buffer, &response_buffer, chan0));
-            //void worker_thread_function (string f, BoundedBuffer* request_buffer, BoundedBuffer* response_buffer, FIFORequestChannel* chan) {
 
         }
     
@@ -251,8 +250,6 @@ int main (int argc, char* argv[]) {
         TCPRequestChannel* chan1 = new TCPRequestChannel(a, r);
         channels.push_back(chan1);
         producers.push_back(thread(file_thread_function, f, m, &request_buffer, chan1));
-
-        //void file_thread_function (string f, int m_, BoundedBuffer* request_buffer, FIFORequestChannel* chan)
 
         for (int i = 0; i < w; i++)
         {
