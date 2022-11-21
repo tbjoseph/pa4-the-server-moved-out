@@ -9,7 +9,10 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         int server_sock, bind_stat, listen_stat;
 
         // Socket
-        server_sock, sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        server_sock = socket(AF_INET, SOCK_STREAM, 0);
+        if (server_sock < 0) throw std::invalid_argument("ERROR opening socket");
+
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
         // Bind
         bzero( (char *)&server, sizeof(server) );
@@ -20,9 +23,11 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         server.sin_port = htons(portno);
 
         bind_stat = bind(server_sock, (struct sockaddr *)&server, sizeof(server));
+        if (bind_stat < 0) throw std::invalid_argument("ERROR on binding");
 
         // Listen
         listen_stat = listen(server_sock, 70);
+        if (listen_stat < 0) throw std::invalid_argument("ERROR on listening");
 
         // Connect
         //accept_conn();
@@ -31,7 +36,10 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         struct sockaddr_in server_info;
         int client_sock, connect_stat;
 
-        client_sock, sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        client_sock = socket(AF_INET, SOCK_STREAM, 0);
+        if (client_sock < 0) throw std::invalid_argument("ERROR opening socket");
+
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
         bzero( (char *)&server_info, sizeof(server_info) );
         //memset(&server, 0, sizeof(server));
@@ -42,6 +50,7 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         //inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr.s_addr);
 
         connect_stat = connect(client_sock, (struct sockaddr *)&server_info, sizeof(server_info));
+        if (connect_stat < 0) throw std::invalid_argument("ERROR on binding");
     }
     
 }
