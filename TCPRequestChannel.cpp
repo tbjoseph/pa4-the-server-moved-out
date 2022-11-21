@@ -46,8 +46,8 @@ TCPRequestChannel::TCPRequestChannel (const std::string _ip_address, const std::
         server_info.sin_family = AF_INET;
         int portno = atoi(_port_no.c_str());
         server_info.sin_port = htons(portno);
-        inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr); //?
-        //inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr.s_addr);
+        //inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr); //?
+        inet_pton(AF_INET, _ip_address.c_str(), &server_info.sin_addr.s_addr);
 
         connect_stat = connect(client_sock, (struct sockaddr *)&server_info, sizeof(server_info));
         if (connect_stat < 0) throw std::invalid_argument("ERROR on binding");
