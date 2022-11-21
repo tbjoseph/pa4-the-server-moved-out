@@ -181,37 +181,34 @@ int main (int argc, char* argv[]) {
 
 
 	// fork and exec the server
-    int pid = fork();
+    /*int pid = fork();
     if (pid == 0) {
         execl("./server", "./server", "-m", (char*) to_string(m).c_str(), nullptr);
-    }
+    }*/
     
 	// initialize overhead (including the control channel)
 	TCPRequestChannel* chan = new TCPRequestChannel(a, r);
     BoundedBuffer request_buffer(b);
     BoundedBuffer response_buffer(b);
 	HistogramCollection hc;
+    vector<TCPRequestChannel*> channels;
 
     vector<thread> producers;
-    //if (f == "") producers.resize(p);
-    //else producers.resize(1);
-    
-    vector<TCPRequestChannel*> channels;
-    //channels.resize(w);
-
     vector<thread> workers;
-    //workers.resize(w);
-
     vector<thread> hist;
-    //if (f == "") producers.resize(h);
-    //else producers.resize(0);
-
 
     // making histograms and adding to collection
     for (int i = 0; i < p; i++) {
         Histogram* h = new Histogram(10, -2.0, 2.0);
         hc.add(h);
     }
+
+    // making worker channels
+    /*for (int i = 0; i < w; i++)
+    {
+        TCPRequestChannel* new_chan = new TCPRequestChannel(a, r);
+        channels.push_back(new_chan);
+    }*/
 	
 	// record start time
     struct timeval start, end;
@@ -336,5 +333,5 @@ int main (int argc, char* argv[]) {
     delete chan;
 
 	// wait for server to exit
-	wait(nullptr);
+	//wait(nullptr);
 }
