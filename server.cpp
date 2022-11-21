@@ -150,7 +150,7 @@ int main (int argc, char* argv[]) {
 	int opt;
 	int sockfd;
 	string r = "8080";
-	while ((opt = getopt(argc, argv, "m:")) != -1) {
+	while ((opt = getopt(argc, argv, "m:r:")) != -1) {
 		switch (opt) {
 			case 'm':
 				buffercapacity = atoi(optarg);

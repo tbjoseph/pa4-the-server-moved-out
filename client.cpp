@@ -147,7 +147,7 @@ int main (int argc, char* argv[]) {
     
     // read arguments
     int opt;
-	while ((opt = getopt(argc, argv, "n:p:w:h:b:m:f:")) != -1) {
+	while ((opt = getopt(argc, argv, "n:p:w:h:b:m:f:a:r:")) != -1) {
 		switch (opt) {
 			case 'n':
 				n = atoi(optarg);
@@ -327,8 +327,8 @@ int main (int argc, char* argv[]) {
     }
     
 	// quit and close control channel
-    //MESSAGE_TYPE q = QUIT_MSG;
-    //chan->cwrite ((char *) &q, sizeof (MESSAGE_TYPE));
+    MESSAGE_TYPE q = QUIT_MSG;
+    chan->cwrite ((char *) &q, sizeof (MESSAGE_TYPE));
     std::cout << "All Done!" << endl;
     delete chan;
 
