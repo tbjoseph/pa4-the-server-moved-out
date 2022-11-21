@@ -11,6 +11,11 @@
 #include <math.h>
 #include <unistd.h>
 
+//socket
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include <cstring>
 #include <string>
 
